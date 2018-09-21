@@ -1,0 +1,18 @@
+ver. 1.3.3, Sep 21, 2018
+  moved from subversion to github
+
+ver. 1.3.2, Jul 3, 2017
+  updated from ANT to GRADLE
+
+ver. 1.3, Apr 24, 2017
+  allows to load scaffold sizes when cmdline parameter '-load_scaffolds' is specified
+
+ver. 1.2, Feb 23, 2017
+  updated: NCBI changed the location of assembly files
+
+ver. 1.1, Feb 2, 2015
+  in addition to loading of chromosome sizes (chromosome information in general)
+  we have another module, to load cytoband information from UCSC
+
+ver. 1.0, Dec 5, 2014
+  first working and tested version of the pipeline
