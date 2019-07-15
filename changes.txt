@@ -1,3 +1,6 @@
+Jul 15, 2019
+  cytoband loader: added source url for bonobo
+  
 ver. 1.3.4, Nov 28, 2018
   chromosome loader: expanded to load Genbank accession ids
 
