@@ -1,7 +1,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
     <bean id="manager" class="edu.mcw.rgd.dataload.Manager">
-        <property name="version" value="Chromosome Pipeline  build 2019-07-15"/>
+        <property name="version" value="Chromosome Pipeline  -- build 2019-12-04"/>
     </bean>
 
     <bean id="chromosomeSizesLoader" class="edu.mcw.rgd.dataload.ChromosomeSizesLoader">
@@ -12,7 +12,7 @@
     </bean>
 
     <bean id="cytomapLoader" class="edu.mcw.rgd.dataload.CytomapLoader">
-        <property name="version" value="Cytomap Loader  build 2019-07-15"/>
+        <property name="version" value="Cytomap Loader  -- build 2019-12-04"/>
         <property name="ideoFiles">
             <map>
                 <!-- bonobo -->
@@ -20,6 +20,10 @@
 
                 <!-- dog -->
                 <entry key="631" value="http://hgdownload.soe.ucsc.edu/goldenPath/canFam3/database/cytoBandIdeo.txt.gz"/>
+
+                <!-- pig -->
+                <entry key="911" value="http://hgdownload.soe.ucsc.edu/goldenPath/susScr11/database/cytoBandIdeo.txt.gz"/>
+                <entry key="910" value="http://hgdownload.soe.ucsc.edu/goldenPath/susScr3/database/cytoBandIdeo.txt.gz"/>
 
                 <!-- rat -->
                 <entry key="360" value="http://hgdownload.soe.ucsc.edu/goldenPath/rn6/database/cytoBandIdeo.txt.gz"/>
