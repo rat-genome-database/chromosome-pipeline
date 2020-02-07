@@ -1,3 +1,6 @@
+Feb 7, 2020
+  added scripts: loadChromosomes.sh and loadScaffolds.sh
+
 Dec 04, 2019
   cytoband loader: added source urls for pig
 
