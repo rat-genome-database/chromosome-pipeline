@@ -178,7 +178,14 @@ public class ChromosomeSizesLoader {
                     continue;
                 if (!refseqId.startsWith("NW_"))
                     continue;
+
                 chr = refseqId;
+                // remove the trailing dot and version number from full accession
+                // f.e. NW_004936469.1 -> NW_004936469
+                int dotPos = chr.indexOf('.');
+                if( dotPos>0 ) {
+                    chr = chr.substring(0, dotPos);
+                }
 
                 scaffoldLengths.put(refseqId, Integer.parseInt(cols[8]));
 
