@@ -1,3 +1,7 @@
+Oct 21, 2020
+  chr loader: RefSeq assembly acc and name is first attempted to be read from MAPS table;
+    if not available, it tries to read id from RGD_ACC_XDB table for map rgd_id (original code)
+
 Jul 20, 2020
   scaffold loader: fixed loading of chr names (to be compatible with maps data and JBrowse)
 

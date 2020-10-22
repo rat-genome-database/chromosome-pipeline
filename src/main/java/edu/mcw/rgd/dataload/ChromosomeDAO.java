@@ -6,6 +6,7 @@ import edu.mcw.rgd.datamodel.Chromosome;
 import edu.mcw.rgd.datamodel.CytoBand;
 import edu.mcw.rgd.datamodel.Map;
 import edu.mcw.rgd.datamodel.XdbId;
+import edu.mcw.rgd.process.Utils;
 
 import java.util.List;
 
@@ -34,6 +35,13 @@ public class ChromosomeDAO {
         if( map==null )
             return null;
 
+        // new code, as of Oct 2020
+        String refSeqAssemblyAcc = map.getRefSeqAssemblyAcc();
+        if( !Utils.isStringEmpty(refSeqAssemblyAcc) ) {
+            return refSeqAssemblyAcc;
+        }
+
+        // old code -- for compatibility
         List<XdbId> list = xdbIdDAO.getXdbIdsByRgdId(XDB_KEY_REFSEQ_ASSEMBLY, map.getRgdId());
         if( list.size()!=1 )
             return null;
@@ -53,6 +61,13 @@ public class ChromosomeDAO {
         if( map==null )
             return null;
 
+        // new code, as of Oct 2020
+        String refSeqAssemblyName = map.getRefSeqAssemblyName();
+        if( !Utils.isStringEmpty(refSeqAssemblyName) ) {
+            return refSeqAssemblyName;
+        }
+
+        // old code -- for compatibility
         List<XdbId> list = xdbIdDAO.getXdbIdsByRgdId(XDB_KEY_REFSEQ_ASSEMBLY, map.getRgdId());
         if( list.size()!=1 )
             return null;
