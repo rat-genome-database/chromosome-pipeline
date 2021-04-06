@@ -6,8 +6,7 @@ import org.springframework.core.io.FileSystemResource;
 
 /**
  * @author mtutaj
- * Date: Aug 13, 2010
- * Time: 10:07:53 AM
+ * @since Aug 13, 2010
  */
 public class Manager {
 
@@ -45,6 +44,8 @@ public class Manager {
             }
             else if( args[i].equals("--load_scaffolds") ) {
                 loadScaffolds = true;
+            } else {
+                System.out.println("WARNING: unknown parameter: " + args[i]);
             }
         }
 

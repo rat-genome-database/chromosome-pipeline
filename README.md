@@ -10,3 +10,9 @@ For scaffold assemblies (chinchilla, squirrel), the following pieces of informat
  - refseq_id  (f.e. NW_004939164.1)
  - genbank_id (f.e. JH395895.1)
  - seq_length (f.e. 8781)   contig length in bytes
+ 
+ ### SCRIPTS
+ For chromosome assemblies use 'loadChromosomes.sh' script. Only information for assembled chromosomes will be loaded.
+ 
+ For scaffold only and mixed assemblies use 'loadScaffolds.sh' script: in addition to assembled chromosomes,
+ the script will also load information for unplaced scaffolds.

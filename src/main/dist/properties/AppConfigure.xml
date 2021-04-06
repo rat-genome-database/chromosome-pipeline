@@ -1,11 +1,11 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
     <bean id="manager" class="edu.mcw.rgd.dataload.Manager">
-        <property name="version" value="Chromosome Pipeline  -- build 2021-03-26"/>
+        <property name="version" value="Chromosome Pipeline  -- build 2021-04-06"/>
     </bean>
 
     <bean id="chromosomeSizesLoader" class="edu.mcw.rgd.dataload.ChromosomeSizesLoader">
-        <property name="version" value="Chromosome Size Loader  -- build 2021-03-26"/>
+        <property name="version" value="Chromosome Size Loader  -- build 2021-04-06"/>
         <property name="gcfDir" value="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/" />
         <property name="assemblyReportFile" value="_assembly_report.txt" />
         <property name="assemblyStatsFile" value="_assembly_stats.txt" />

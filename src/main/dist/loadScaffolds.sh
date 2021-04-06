@@ -1,4 +1,4 @@
-# run Chromosome loading pipeline for a scaffold-only assembly
+# load information for assembled chromosomes AND unplaced scaffolds for given assembly
 #
 . /etc/profile
 APPDIR=/home/rgddata/pipelines/ChromosomePipeline

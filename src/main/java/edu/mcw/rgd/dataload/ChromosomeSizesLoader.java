@@ -10,8 +10,7 @@ import java.util.Map;
 
 /**
  * @author mtutaj
- * Date: 1/30/15
- * <p>
+ * @since 1/30/15
  * load chromosome sizes
  */
 public class ChromosomeSizesLoader {
@@ -39,29 +38,38 @@ public class ChromosomeSizesLoader {
         System.out.println("  ASSEMBLY_NAME="+assemblyName);
 
         if( loadScaffolds ) {
-            System.out.println("  SCAFFOLD-ONLY LOAD");
-        } else {
-            System.out.println("  CHROMOSOME-ONLY LOAD (not scaffolds)");
+            System.out.println("  LOAD_SCAFFOLDS=true    --- assembly scaffolds are loaded in addition to chromosomes");
         }
 
-        Map<String,Integer> scaffoldLengths = loadScaffolds ? new HashMap<>() : null;
-        Map<String,ChrInfo> chrAccIds = getChromosomeAccIds(assemblyId, assemblyName, scaffoldLengths);
-        System.out.println("chromosomes in assembly: "+chrAccIds.size());
+        Map<String,ChrInfo> chrAccIds = getChromosomeAccIds(assemblyId, assemblyName);
+        int chrCount = 0;
+        int scaffoldCount = 0;
         for( Map.Entry<String,ChrInfo> entry: chrAccIds.entrySet() ) {
+            String chr = entry.getKey();
             ChrInfo ci = entry.getValue();
             String chrAccId = ci.refseqId;
-            Chromosome chr = dao.createChromosome(mapKey, entry.getKey(), chrAccId);
-            chr.setGenbankId(ci.genbankId);
+            Chromosome c = dao.createChromosome(mapKey, chr, chrAccId);
+            c.setGenbankId(ci.genbankId);
 
-            if( loadScaffolds ) {
-                chr.setSeqLength(scaffoldLengths.get(chrAccId));
+            if( chr.startsWith("NW_") ) {
+                if( loadScaffolds ) {
+                    scaffoldCount++;
+                    c.setSeqLength(ci.seqLength);
+                }
             } else {
+                chrCount++;
                 // download file with chromosome
-                getChromosomeStats(assemblyId, assemblyName, chr);
+                getChromosomeStats(assemblyId, assemblyName, c);
             }
 
             // parse it and read
-            dao.updateChromosome(chr);
+            dao.updateChromosome(c);
+        }
+        if( chrCount!=0 ) {
+            System.out.println("chromosomes in assembly: " + chrCount);
+        }
+        if( scaffoldCount!=0 ) {
+            System.out.println("scaffolds in assembly: " + scaffoldCount);
         }
         System.out.println("  OK!");
     }
@@ -138,7 +146,7 @@ public class ChromosomeSizesLoader {
      * get map of chromosome names mapped to chromosome accession ids
      * @return
      */
-    Map<String,ChrInfo> getChromosomeAccIds(String assemblyId, String assemblyName, Map<String,Integer> scaffoldLengths) throws Exception {
+    Map<String,ChrInfo> getChromosomeAccIds(String assemblyId, String assemblyName) throws Exception {
 
         String fileNamePrefix = getExternalFileNamePrefix(assemblyId, assemblyName);
         String path = fileNamePrefix + getAssemblyReportFile();
@@ -166,16 +174,24 @@ public class ChromosomeSizesLoader {
             String[] cols = line.split("[\\t]", -1);
 
             String chr = cols[2];
-            if( chr.isEmpty() || chr.length()>2 )
+            if( chr.isEmpty() )
                 continue;
 
             String role = cols[1];
             String refseqId = cols[6];
             String genbankId = cols[4];
+            int length = 0;
+            if( cols.length>=9 ) {
+                if( !cols[8].equals("na") ) {
+                    length = Integer.parseInt(cols[8]);
+                }
+            }
 
-            if( scaffoldLengths!=null ) {
-                if (!role.equals("unplaced-scaffold"))
+            // load chromosomes
+            if( role.equals("assembled-molecule") ) {
+                if (!refseqId.startsWith("NC_"))
                     continue;
+            } else if( role.equals("unplaced-scaffold") ) {
                 if (!refseqId.startsWith("NW_"))
                     continue;
 
@@ -186,19 +202,12 @@ public class ChromosomeSizesLoader {
                 if( dotPos>0 ) {
                     chr = chr.substring(0, dotPos);
                 }
-
-                scaffoldLengths.put(refseqId, Integer.parseInt(cols[8]));
-
-            } else { // load chromosomes
-                if (!role.equals("assembled-molecule"))
-                    continue;
-                if (!refseqId.startsWith("NC_"))
-                    continue;
             }
 
             ChrInfo ci = new ChrInfo();
             ci.refseqId = refseqId;
             ci.genbankId = genbankId;
+            ci.seqLength = length;
             chrAccIds.put(chr, ci);
         }
         reader.close();
@@ -240,5 +249,6 @@ public class ChromosomeSizesLoader {
     class ChrInfo {
         public String refseqId;
         public String genbankId;
+        public int seqLength;
     }
 }

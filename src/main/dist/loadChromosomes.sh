@@ -1,4 +1,6 @@
-# run Chromosome loading pipeline for an assembly with chromosomes
+# load information for assembled chromosomes for a given assembly
+# NOTE: any unplaced scaffold information is NOT loaded
+#
 . /etc/profile
 APPDIR=/home/rgddata/pipelines/ChromosomePipeline
 # set variable HOST to uppercase hostname (f.e. TRAVIS)

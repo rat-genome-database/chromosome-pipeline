@@ -1,3 +1,6 @@
+Apr 06, 2021
+  loading of mixed assemblies
+
 Mar 26, 2021
   updated url at NCBI to download assembly files
 
