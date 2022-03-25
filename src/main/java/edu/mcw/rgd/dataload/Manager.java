@@ -1,5 +1,7 @@
 package edu.mcw.rgd.dataload;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.FileSystemResource;
@@ -11,6 +13,8 @@ import org.springframework.core.io.FileSystemResource;
 public class Manager {
 
     private String version;
+
+    protected final Logger log = LogManager.getLogger("status");
 
     /**
      * starts the pipeline; properties are read from properties/AppConfigure.xml file
@@ -29,7 +33,7 @@ public class Manager {
         DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
         new XmlBeanDefinitionReader(bf).loadBeanDefinitions(new FileSystemResource("properties/AppConfigure.xml"));
         Manager manager=(Manager) (bf.getBean("manager"));
-        System.out.println(manager.getVersion());
+        manager.log.info(manager.getVersion());
 
         // parse args
         int mapKey = 0;
@@ -45,7 +49,7 @@ public class Manager {
             else if( args[i].equals("--load_scaffolds") ) {
                 loadScaffolds = true;
             } else {
-                System.out.println("WARNING: unknown parameter: " + args[i]);
+                manager.log.warn("WARNING: unknown parameter: " + args[i]);
             }
         }
 
