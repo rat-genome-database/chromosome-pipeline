@@ -1,7 +1,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
     <bean id="manager" class="edu.mcw.rgd.dataload.Manager">
-        <property name="version" value="Chromosome Pipeline  -- build Feb 10, 2023"/>
+        <property name="version" value="Chromosome Pipeline  -- build Feb 27, 2023"/>
     </bean>
 
     <bean id="chromosomeSizesLoader" class="edu.mcw.rgd.dataload.ChromosomeSizesLoader">
