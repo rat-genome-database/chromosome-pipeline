@@ -122,7 +122,14 @@ public class ChromosomeSizesLoader {
                 continue;
 
             String statName = cols[4];
-            int statValue = Integer.parseInt(cols[5]);
+            int statValue = -1;
+            try {
+                statValue = Integer.parseInt(cols[5]);
+            } catch( NumberFormatException e ) {
+                // not an integer -- try double and round it to int
+                double dVal = Double.parseDouble(cols[5]);
+                statValue = (int) Math.round(dVal);
+            }
 
             if( statName.equals("total-length") )
                 chr.setSeqLength(statValue);

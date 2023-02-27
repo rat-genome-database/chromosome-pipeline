@@ -1,5 +1,6 @@
 Feb 27, 2023
-  removed unused lib from dependencies
+  removed unused lib from dependencies;
+  fixed a problem with loading assembly stat data
 
 Feb 10, 2023
   updated build.gradle to be gradle 6.x + compatible
