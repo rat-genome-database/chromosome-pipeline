@@ -20,6 +20,7 @@ public class ChromosomeSizesLoader {
 
     private ChromosomeDAO dao = new ChromosomeDAO();
     private String gcfDir;
+    private String gcaDir;
 
     public void run(int mapKey, boolean loadScaffolds) throws Exception {
         System.out.println(getVersion());
@@ -75,7 +76,9 @@ public class ChromosomeSizesLoader {
     }
 
     String getExternalFileNamePrefix(String assemblyId, String assemblyName) {
-        return getGcfDir() + assemblyId.substring(4, 7)
+
+        String out = assemblyId.startsWith("GCF") ? getGcfDir() : getGcaDir();
+        return out + assemblyId.substring(4, 7)
                 + "/" + assemblyId.substring(7, 10)
                 + "/" + assemblyId.substring(10, 13)
                 + "/" + assemblyId + "_" + assemblyName
@@ -113,7 +116,7 @@ public class ChromosomeSizesLoader {
                 continue;
             String[] cols = line.split("[\\t]", -1);
 
-            // in 4nd col, there must be a 'assembled-molecule'
+            // in 4th col, there must be a 'assembled-molecule'
             String seqType = cols[3];
             if( !seqType.equals("assembled-molecule") )
                 continue;
@@ -196,8 +199,13 @@ public class ChromosomeSizesLoader {
 
             // load chromosomes
             if( role.equals("assembled-molecule") ) {
-                if (!refseqId.startsWith("NC_"))
-                    continue;
+                if( assemblyId.startsWith("GCF") ) {
+                    // RefSeq assembly
+                    if (!refseqId.startsWith("NC_"))
+                        continue;
+                } else if( assemblyId.startsWith("GCA") ) {
+                    // no special handling
+                }
             } else if( role.equals("unplaced-scaffold") ) {
                 if (!refseqId.startsWith("NW_"))
                     continue;
@@ -209,6 +217,13 @@ public class ChromosomeSizesLoader {
                 if( dotPos>0 ) {
                     chr = chr.substring(0, dotPos);
                 }
+            }
+
+            if( refseqId!=null && refseqId.equals("na") ) {
+                refseqId = null;
+            }
+            if( genbankId!=null && genbankId.equals("na") ) {
+                genbankId = null;
             }
 
             ChrInfo ci = new ChrInfo();
@@ -251,6 +266,14 @@ public class ChromosomeSizesLoader {
 
     public String getGcfDir() {
         return gcfDir;
+    }
+
+    public String getGcaDir() {
+        return gcaDir;
+    }
+
+    public void setGcaDir(String gcaDir) {
+        this.gcaDir = gcaDir;
     }
 
     class ChrInfo {
