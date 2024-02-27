@@ -1,3 +1,6 @@
+Feb 27, 2024
+  updated to java 17
+
 Sep 13, 2023
   chromosome sizes loader: extended to assemblies without RefSeq data
 
