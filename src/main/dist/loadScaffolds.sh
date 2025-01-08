@@ -1,7 +1,7 @@
 # load information for assembled chromosomes AND unplaced scaffolds for given assembly
 #
 . /etc/profile
-APPDIR=/home/rgddata/pipelines/ChromosomePipeline
+APPDIR="/home/rgddata/pipelines/chromosome-pipeline"
 # set variable HOST to uppercase hostname (f.e. TRAVIS)
 HOST=`hostname -s | tr '[a-z]' '[A-Z]'`
 

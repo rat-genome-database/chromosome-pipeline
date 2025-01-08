@@ -1,3 +1,6 @@
+Jan 08, 2025
+  updated distro to 'chromosome-pipeline'
+
 Feb 27, 2024
   updated to java 17
 

@@ -2,7 +2,8 @@
 # NOTE: any unplaced scaffold information is NOT loaded
 #
 . /etc/profile
-APPDIR=/home/rgddata/pipelines/ChromosomePipeline
+APPDIR="/home/rgddata/pipelines/chromosome-pipeline"
+
 # set variable HOST to uppercase hostname (f.e. TRAVIS)
 HOST=`hostname -s | tr '[a-z]' '[A-Z]'`
 

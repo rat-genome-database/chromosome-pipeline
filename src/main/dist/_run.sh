@@ -2,7 +2,7 @@
 # shell script to run chromosome pipeline
 . /etc/profile
 
-APPNAME=ChromosomePipeline
+APPNAME="chromosome-pipeline"
 APPDIR=/home/rgddata/pipelines/$APPNAME
 
 cd $APPDIR
