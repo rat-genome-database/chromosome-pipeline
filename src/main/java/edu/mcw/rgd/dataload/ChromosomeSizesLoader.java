@@ -66,6 +66,12 @@ public class ChromosomeSizesLoader {
             // parse it and read
             dao.updateChromosome(c);
         }
+        // delete chromosomes from database that are not in the valid set
+        int deleted = dao.deleteChromosomesNotInSet(mapKey, chrAccIds.keySet());
+        if( deleted!=0 ) {
+            System.out.println("obsolete chromosomes deleted from database: " + deleted);
+        }
+
         if( chrCount!=0 ) {
             System.out.println("chromosomes in assembly: " + chrCount);
         }

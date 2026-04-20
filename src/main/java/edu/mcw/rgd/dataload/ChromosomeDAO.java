@@ -103,6 +103,19 @@ public class ChromosomeDAO {
     }
 
 
+    public int deleteChromosomesNotInSet(int mapKey, java.util.Set<String> validChromosomes) throws Exception {
+        List<Chromosome> allChromosomes = mapDAO.getChromosomes(mapKey);
+        int deleted = 0;
+        for( Chromosome c: allChromosomes ) {
+            if( !validChromosomes.contains(c.getChromosome()) ) {
+                String sql = "DELETE FROM chromosomes WHERE map_key=? AND chromosome=?";
+                mapDAO.update(sql, mapKey, c.getChromosome());
+                deleted++;
+            }
+        }
+        return deleted;
+    }
+
     public CytoBand createCytoBand(int mapKey, String chr, String bandName) throws Exception {
 
         CytoBand cytoBand = mapDAO.getCytoBand(mapKey, chr, bandName);
