@@ -42,7 +42,7 @@ public class ChromosomeSizesLoader {
             System.out.println("  LOAD_SCAFFOLDS=true    --- assembly scaffolds are loaded in addition to chromosomes");
         }
 
-        Map<String,ChrInfo> chrAccIds = getChromosomeAccIds(assemblyId, assemblyName);
+        Map<String,ChrInfo> chrAccIds = getChromosomeAccIds(assemblyId, assemblyName, loadScaffolds);
         int chrCount = 0;
         int scaffoldCount = 0;
         for( Map.Entry<String,ChrInfo> entry: chrAccIds.entrySet() ) {
@@ -156,7 +156,7 @@ public class ChromosomeSizesLoader {
      * get map of chromosome names mapped to chromosome accession ids
      * @return
      */
-    Map<String,ChrInfo> getChromosomeAccIds(String assemblyId, String assemblyName) throws Exception {
+    Map<String,ChrInfo> getChromosomeAccIds(String assemblyId, String assemblyName, boolean loadScaffolds) throws Exception {
 
         String fileNamePrefix = getExternalFileNamePrefix(assemblyId, assemblyName);
         String path = fileNamePrefix + getAssemblyReportFile();
@@ -206,7 +206,7 @@ public class ChromosomeSizesLoader {
                 } else if( assemblyId.startsWith("GCA") ) {
                     // no special handling
                 }
-            } else if( role.equals("unplaced-scaffold") ) {
+            } else if( loadScaffolds && role.equals("unplaced-scaffold") ) {
                 if (!refseqId.startsWith("NW_"))
                     continue;
 
@@ -217,6 +217,9 @@ public class ChromosomeSizesLoader {
                 if( dotPos>0 ) {
                     chr = chr.substring(0, dotPos);
                 }
+            } else {
+                // skip alt-scaffolds, unlocalized-scaffolds, etc.
+                continue;
             }
 
             if( refseqId!=null && refseqId.equals("na") ) {
@@ -230,7 +233,7 @@ public class ChromosomeSizesLoader {
             ci.refseqId = refseqId;
             ci.genbankId = genbankId;
             ci.seqLength = length;
-            chrAccIds.put(chr, ci);
+            chrAccIds.putIfAbsent(chr, ci);
         }
         reader.close();
         return chrAccIds;
