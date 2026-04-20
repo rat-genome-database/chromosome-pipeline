@@ -205,13 +205,7 @@ public class ChromosomeSizesLoader {
 
             // load chromosomes
             if( role.equals("assembled-molecule") ) {
-                if( assemblyId.startsWith("GCF") ) {
-                    // RefSeq assembly
-                    if (!refseqId.startsWith("NC_"))
-                        continue;
-                } else if( assemblyId.startsWith("GCA") ) {
-                    // no special handling
-                }
+                // all assembled-molecule entries are loaded (NC_ or not)
             } else if( loadScaffolds && role.equals("unplaced-scaffold") ) {
                 if (!refseqId.startsWith("NW_"))
                     continue;
