@@ -3,6 +3,7 @@ Apr 20, 2026
   fixed parser: skip alt-scaffolds/unlocalized-scaffolds; only load unplaced-scaffolds when explicitly requested
   delete obsolete chromosome entries from database after loading
   load all assembled-molecule entries including those without NC_ RefSeq ID (e.g. MT)
+  load seq_length from assembly report for all chromosomes; report if stats file overwrites it
 
 May 21, 2025
   updated dependencies

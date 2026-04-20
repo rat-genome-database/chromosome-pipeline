@@ -52,14 +52,15 @@ public class ChromosomeSizesLoader {
             Chromosome c = dao.createChromosome(mapKey, chr, chrAccId);
             c.setGenbankId(ci.genbankId);
 
+            c.setSeqLength(ci.seqLength);
+
             if( chr.startsWith("NW_") ) {
                 if( loadScaffolds ) {
                     scaffoldCount++;
-                    c.setSeqLength(ci.seqLength);
                 }
             } else {
                 chrCount++;
-                // download file with chromosome
+                // download file with chromosome stats; may overwrite seqLength
                 getChromosomeStats(assemblyId, assemblyName, c);
             }
 
@@ -140,8 +141,12 @@ public class ChromosomeSizesLoader {
                 statValue = (int) Math.round(dVal);
             }
 
-            if( statName.equals("total-length") )
+            if( statName.equals("total-length") ) {
+                if( chr.getSeqLength()!=0 && chr.getSeqLength()!=statValue ) {
+                    System.out.println("  NOTE: chr"+chr.getChromosome()+" seqLength from assembly report: "+chr.getSeqLength()+" overwritten by stats file: "+statValue);
+                }
                 chr.setSeqLength(statValue);
+            }
             else if( statName.equals("ungapped-length") )
                 chr.setGapLength(chr.getSeqLength()-statValue);
             else if( statName.equals("scaffold-count") )
