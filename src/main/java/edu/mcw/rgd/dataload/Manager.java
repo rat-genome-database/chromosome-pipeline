@@ -1,5 +1,7 @@
 package edu.mcw.rgd.dataload;
 
+import edu.mcw.rgd.process.MemoryMonitor;
+import edu.mcw.rgd.process.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -35,6 +37,10 @@ public class Manager {
         Manager manager=(Manager) (bf.getBean("manager"));
         manager.log.info(manager.getVersion());
 
+        long time0 = System.currentTimeMillis();
+        MemoryMonitor memoryMonitor = new MemoryMonitor();
+        memoryMonitor.start();
+
         // parse args
         int mapKey = 0;
         boolean loadScaffolds = false;
@@ -67,6 +73,10 @@ public class Manager {
         } else {
             usage();
         }
+
+        memoryMonitor.stop();
+        manager.log.info(memoryMonitor.getSummary());
+        manager.log.info("=== OK === elapsed "+Utils.formatElapsedTime(time0, System.currentTimeMillis()));
     }
 
     static void usage() {
