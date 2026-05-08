@@ -49,6 +49,46 @@ public class ChromosomeDAO {
     }
 
     /**
+     * given mapKey, return the assembly accession id used for fetching NCBI
+     * assembly_report.txt. Returns RefSeq Assembly Acc (GCF_xxx) when set;
+     * otherwise falls back to GenBank Assembly Acc (GCA_xxx). May return
+     * null if the assembly has neither.
+     * @param mapKey map key
+     * @return GCF_xxx, or GCA_xxx, or null
+     * @throws Exception
+     */
+    public String getAssemblyAccId(int mapKey) throws Exception {
+
+        String acc = getRefSeqAssemblyId(mapKey);
+        if( !Utils.isStringEmpty(acc) ) {
+            return acc;
+        }
+
+        Map map = mapDAO.getMap(mapKey);
+        return map==null ? null : map.getGenBankAssemblyAcc();
+    }
+
+    /**
+     * given mapKey, return the assembly name used for constructing NCBI
+     * directory paths. Returns RefSeq Assembly Name when set; otherwise
+     * falls back to MAP_NAME (the natural name used by NCBI's GCA layout
+     * for GenBank-only assemblies).
+     * @param mapKey map key
+     * @return assembly name, or null
+     * @throws Exception
+     */
+    public String getAssemblyName(int mapKey) throws Exception {
+
+        String name = getRefSeqAssemblyName(mapKey);
+        if( !Utils.isStringEmpty(name) ) {
+            return name;
+        }
+
+        Map map = mapDAO.getMap(mapKey);
+        return map==null ? null : map.getName();
+    }
+
+    /**
      * given mapKey, return RefSeq Assembly Name, f.e. 'CanFam3.1;
      * @param mapKey map key
      * @return RefSeq Assembly name, or null, if not available

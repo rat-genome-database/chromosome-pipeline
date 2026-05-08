@@ -1,7 +1,13 @@
 # chromosome-pipeline
-Load chromosome and cytoband information.
+Load chromosome and cytoband information into RGD.
 
-Chromosome information is stored in CHROMOSOMES table.
+Chromosome and scaffold sizes are pulled from NCBI assembly reports
+(`*_assembly_report.txt` and `*_assembly_stats.txt` under
+`https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/` or `.../GCA/`).
+Cytoband information is pulled from UCSC `cytoBandIdeo.txt.gz` files.
+
+Chromosome information is stored in the CHROMOSOMES table.
+Cytoband information is stored in the CYTO_BANDS table.
 
 For scaffold assemblies (chinchilla, squirrel), the following pieces of information are stored:
 
@@ -9,10 +15,16 @@ For scaffold assemblies (chinchilla, squirrel), the following pieces of informat
  - chromosome (f.e. NW_004939164) as used in RGD
  - refseq_id  (f.e. NW_004939164.1)
  - genbank_id (f.e. JH395895.1)
- - seq_length (f.e. 8781)   contig length in bytes
- 
- ### SCRIPTS
- For chromosome assemblies use 'loadChromosomes.sh' script. Only information for assembled chromosomes will be loaded.
- 
- For scaffold only and mixed assemblies use 'loadScaffolds.sh' script: in addition to assembled chromosomes,
- the script will also load information for unplaced scaffolds.
+ - seq_length (f.e. 8781) — sequence length in base pairs
+
+### SCRIPTS
+
+`loadChromosomes.sh <map_key>` — load assembled chromosomes for the given assembly.
+Only information for assembled chromosomes is loaded.
+
+`loadScaffolds.sh <map_key>` — load both assembled chromosomes and unplaced
+scaffolds. Use this for scaffold-only or mixed assemblies.
+
+`loadCytobands.sh <map_key>` — load cytoband regions from UCSC for the given
+assembly. The list of supported assemblies and their UCSC source URLs is
+maintained in `properties/AppConfigure.xml` under the `cytomapLoader` bean.

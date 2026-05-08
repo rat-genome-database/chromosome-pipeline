@@ -26,15 +26,17 @@ public class ChromosomeSizesLoader {
         System.out.println(getVersion());
         System.out.println("  MAP_KEY="+mapKey);
 
-        String assemblyId = dao.getRefSeqAssemblyId(mapKey);
+        String assemblyId = dao.getAssemblyAccId(mapKey);
         if( assemblyId==null ) {
-            System.out.println("ERROR: no Assembly ID for mapKey="+mapKey);
+            System.out.println("  no Assembly Acc (RefSeq or GenBank) for mapKey="+mapKey+"; skipping chromosome sizes load");
+            return;
         }
         System.out.println("  ASSEMBLY_ID="+assemblyId);
 
-        String assemblyName = dao.getRefSeqAssemblyName(mapKey);
+        String assemblyName = dao.getAssemblyName(mapKey);
         if( assemblyName==null ) {
-            System.out.println("ERROR: no Assembly Name for mapKey="+mapKey);
+            System.out.println("  no Assembly Name for mapKey="+mapKey+"; skipping chromosome sizes load");
+            return;
         }
         System.out.println("  ASSEMBLY_NAME="+assemblyName);
 
