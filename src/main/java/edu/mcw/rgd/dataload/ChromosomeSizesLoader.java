@@ -1,7 +1,7 @@
 package edu.mcw.rgd.dataload;
 
 import edu.mcw.rgd.datamodel.Chromosome;
-import edu.mcw.rgd.process.FileDownloader;
+import edu.mcw.rgd.process.FileDownloader2;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -112,7 +112,7 @@ public class ChromosomeSizesLoader {
         //Primary Assembly	1	Chromosome	assembled-molecule	spanned-gaps	7723
         //Primary Assembly	1	Chromosome	assembled-molecule	unspanned-gaps	57
 
-        FileDownloader downloader = new FileDownloader();
+        FileDownloader2 downloader = new FileDownloader2();
         downloader.setExternalFile(path);
         downloader.setLocalFile("data/" + assemblyName + ".stats.txt");
         downloader.setPrependDateStamp(true);
@@ -180,7 +180,7 @@ public class ChromosomeSizesLoader {
         //# Sequence-Name	Sequence-Role	Assigned-Molecule	Assigned-Molecule-Location/Type	GenBank-Accn	Relationship	RefSeq-Accn	Assembly-Unit
         //1	assembled-molecule	1	Chromosome	na	<>	NC_005100.2	Primary Assembly
         //2	assembled-molecule	2	Chromosome	na	<>	NC_005101.2	Primary Assembly
-        FileDownloader downloader = new FileDownloader();
+        FileDownloader2 downloader = new FileDownloader2();
         downloader.setExternalFile(path);
         downloader.setLocalFile("data/" + assemblyName + ".assembly.txt");
         downloader.setPrependDateStamp(true);

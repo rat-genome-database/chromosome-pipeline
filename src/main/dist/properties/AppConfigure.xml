@@ -1,11 +1,11 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
     <bean id="manager" class="edu.mcw.rgd.dataload.Manager">
-        <property name="version" value="chromosome-pipeline  -- build May 08, 2026"/>
+        <property name="version" value="chromosome-pipeline  -- build May 15, 2026"/>
     </bean>
 
     <bean id="chromosomeSizesLoader" class="edu.mcw.rgd.dataload.ChromosomeSizesLoader">
-        <property name="version" value="Chromosome Size Loader  -- build Sep 13, 2023"/>
+        <property name="version" value="Chromosome Size Loader  -- build May 15, 2026"/>
         <property name="gcaDir" value="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/" />
         <property name="gcfDir" value="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/" />
         <property name="assemblyReportFile" value="_assembly_report.txt" />
@@ -13,7 +13,7 @@
     </bean>
 
     <bean id="cytomapLoader" class="edu.mcw.rgd.dataload.CytomapLoader">
-        <property name="version" value="Cytomap Loader  -- build 2019-12-04"/>
+        <property name="version" value="Cytomap Loader  -- build 2026-05-15"/>
         <property name="ideoFiles">
             <map>
                 <!-- bonobo -->

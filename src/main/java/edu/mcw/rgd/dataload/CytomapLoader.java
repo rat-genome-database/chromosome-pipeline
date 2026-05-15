@@ -2,7 +2,7 @@ package edu.mcw.rgd.dataload;
 
 
 import edu.mcw.rgd.datamodel.CytoBand;
-import edu.mcw.rgd.process.FileDownloader;
+import edu.mcw.rgd.process.FileDownloader2;
 import edu.mcw.rgd.process.Utils;
 
 import java.io.BufferedReader;
@@ -31,7 +31,7 @@ public class CytomapLoader {
                 String fileName = entry.getValue();
                 System.out.println("Downloading " + fileName);
 
-                FileDownloader downloader = new FileDownloader();
+                FileDownloader2 downloader = new FileDownloader2();
                 downloader.setExternalFile(fileName);
                 downloader.setLocalFile("data/" + mapKey + ".txt.gz");
                 downloader.setUseCompression(true);
