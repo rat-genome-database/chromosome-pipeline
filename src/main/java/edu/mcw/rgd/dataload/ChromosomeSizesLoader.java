@@ -40,11 +40,16 @@ public class ChromosomeSizesLoader {
         }
         System.out.println("  ASSEMBLY_NAME="+assemblyName);
 
+        // NCBI replaces spaces and other special characters in the assembly name with
+        // underscores when building its genome FTP directory/file names
+        // (e.g. "Naked mole-rat maternal" -> "Naked_mole-rat_maternal")
+        String assemblyDirName = assemblyName.replaceAll("[^A-Za-z0-9._-]", "_");
+
         if( loadScaffolds ) {
             System.out.println("  LOAD_SCAFFOLDS=true    --- assembly scaffolds are loaded in addition to chromosomes");
         }
 
-        Map<String,ChrInfo> chrAccIds = getChromosomeAccIds(assemblyId, assemblyName, loadScaffolds);
+        Map<String,ChrInfo> chrAccIds = getChromosomeAccIds(assemblyId, assemblyDirName, loadScaffolds);
         int chrCount = 0;
         int scaffoldCount = 0;
         for( Map.Entry<String,ChrInfo> entry: chrAccIds.entrySet() ) {
@@ -63,7 +68,7 @@ public class ChromosomeSizesLoader {
             } else {
                 chrCount++;
                 // download file with chromosome stats; may overwrite seqLength
-                getChromosomeStats(assemblyId, assemblyName, c);
+                getChromosomeStats(assemblyId, assemblyDirName, c);
             }
 
             // parse it and read
