@@ -10,5 +10,5 @@ HOST=`hostname -s | tr '[a-z]' '[A-Z]'`
 
 $APPDIR/_run.sh --load cytoband --map_key $1
 
-mailx -s "[$HOST] Cytoband pipeline" mtutaj@mcw.edu < $APPDIR/logs/core.log
+mailx -s "[$HOST] Cytoband pipeline" mtutaj@mcw.edu < $APPDIR/logs/summary.log
 

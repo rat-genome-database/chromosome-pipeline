@@ -1,3 +1,8 @@
+Jul 27, 2026
+  loaders now log via the 'status' logger instead of System.out, so load results reach summary.log
+  notification scripts now email logs/summary.log (logs/core.log was never generated)
+  updated dependencies
+
 Jun 05, 2026
   sanitize assembly name when building NCBI paths (handles names with spaces)
 

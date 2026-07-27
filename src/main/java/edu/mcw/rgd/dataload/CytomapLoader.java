@@ -4,6 +4,8 @@ package edu.mcw.rgd.dataload;
 import edu.mcw.rgd.datamodel.CytoBand;
 import edu.mcw.rgd.process.FileDownloader2;
 import edu.mcw.rgd.process.Utils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -16,20 +18,21 @@ import java.util.zip.GZIPInputStream;
  * Date: 2/2/15
  */
 public class CytomapLoader {
+    private final Logger log = LogManager.getLogger("status");
+
     private String version;
     private Map<String, String> ideoFiles;
 
     private ChromosomeDAO dao = new ChromosomeDAO();
 
     public void run(int mapKeyOverride) throws Exception {
-        System.out.println(getVersion());
-        //System.out.println("  MAP_KEY="+mapKeyOverride);
+        log.info(getVersion());
 
         for( Map.Entry<String,String> entry: ideoFiles.entrySet() ) {
             int mapKey = Integer.parseInt(entry.getKey());
             if( mapKeyOverride==mapKey ) {
                 String fileName = entry.getValue();
-                System.out.println("Downloading " + fileName);
+                log.info("Downloading " + fileName);
 
                 FileDownloader2 downloader = new FileDownloader2();
                 downloader.setExternalFile(fileName);
@@ -41,7 +44,7 @@ public class CytomapLoader {
                 parse(localFile, mapKey);
             }
         }
-        System.out.println("  OK!");
+        log.info("  OK!");
     }
 
     void parse(String fileName, int mapKey) throws Exception {
@@ -63,8 +66,6 @@ public class CytomapLoader {
             String giemsaStain = cols[4];
             String bandName = cols[3];
 
-            //System.out.println("chr"+chr+":"+startPos+".."+stopPos+" - "+bandName+" - "+bandStain);
-
             CytoBand cytoBand = dao.createCytoBand(mapKey, chr, bandName);
             cytoBand.setStartPos(startPos);
             cytoBand.setStopPos(stopPos);
@@ -74,7 +75,7 @@ public class CytomapLoader {
         }
         reader.close();
 
-        System.out.println("map_key="+mapKey+", "+fileName+", lines_loaded="+bandRegions);
+        log.info("map_key="+mapKey+", "+fileName+", lines_loaded="+bandRegions);
     }
 
     public void setVersion(String version) {

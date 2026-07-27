@@ -7,5 +7,5 @@ HOST=`hostname -s | tr '[a-z]' '[A-Z]'`
 
 $APPDIR/_run.sh --load chrSizes --load_scaffolds --map_key $1
 
-mailx -s "[$HOST] Chromosome pipeline" mtutaj@mcw.edu < $APPDIR/logs/core.log
+mailx -s "[$HOST] Chromosome pipeline" mtutaj@mcw.edu < $APPDIR/logs/summary.log
 

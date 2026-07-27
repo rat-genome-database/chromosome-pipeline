@@ -2,6 +2,8 @@ package edu.mcw.rgd.dataload;
 
 import edu.mcw.rgd.datamodel.Chromosome;
 import edu.mcw.rgd.process.FileDownloader2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -14,6 +16,8 @@ import java.util.Map;
  * load chromosome sizes
  */
 public class ChromosomeSizesLoader {
+    private final Logger log = LogManager.getLogger("status");
+
     private String version;
     private String assemblyReportFile;
     private String assemblyStatsFile;
@@ -23,22 +27,22 @@ public class ChromosomeSizesLoader {
     private String gcaDir;
 
     public void run(int mapKey, boolean loadScaffolds) throws Exception {
-        System.out.println(getVersion());
-        System.out.println("  MAP_KEY="+mapKey);
+        log.info(getVersion());
+        log.info("  MAP_KEY="+mapKey);
 
         String assemblyId = dao.getAssemblyAccId(mapKey);
         if( assemblyId==null ) {
-            System.out.println("  no Assembly Acc (RefSeq or GenBank) for mapKey="+mapKey+"; skipping chromosome sizes load");
+            log.warn("  no Assembly Acc (RefSeq or GenBank) for mapKey="+mapKey+"; skipping chromosome sizes load");
             return;
         }
-        System.out.println("  ASSEMBLY_ID="+assemblyId);
+        log.info("  ASSEMBLY_ID="+assemblyId);
 
         String assemblyName = dao.getAssemblyName(mapKey);
         if( assemblyName==null ) {
-            System.out.println("  no Assembly Name for mapKey="+mapKey+"; skipping chromosome sizes load");
+            log.warn("  no Assembly Name for mapKey="+mapKey+"; skipping chromosome sizes load");
             return;
         }
-        System.out.println("  ASSEMBLY_NAME="+assemblyName);
+        log.info("  ASSEMBLY_NAME="+assemblyName);
 
         // NCBI replaces spaces and other special characters in the assembly name with
         // underscores when building its genome FTP directory/file names
@@ -46,7 +50,7 @@ public class ChromosomeSizesLoader {
         String assemblyDirName = assemblyName.replaceAll("[^A-Za-z0-9._-]", "_");
 
         if( loadScaffolds ) {
-            System.out.println("  LOAD_SCAFFOLDS=true    --- assembly scaffolds are loaded in addition to chromosomes");
+            log.info("  LOAD_SCAFFOLDS=true    --- assembly scaffolds are loaded in addition to chromosomes");
         }
 
         Map<String,ChrInfo> chrAccIds = getChromosomeAccIds(assemblyId, assemblyDirName, loadScaffolds);
@@ -77,16 +81,16 @@ public class ChromosomeSizesLoader {
         // delete chromosomes from database that are not in the valid set
         int deleted = dao.deleteChromosomesNotInSet(mapKey, chrAccIds.keySet());
         if( deleted!=0 ) {
-            System.out.println("obsolete chromosomes deleted from database: " + deleted);
+            log.info("obsolete chromosomes deleted from database: " + deleted);
         }
 
         if( chrCount!=0 ) {
-            System.out.println("chromosomes in assembly: " + chrCount);
+            log.info("chromosomes in assembly: " + chrCount);
         }
         if( scaffoldCount!=0 ) {
-            System.out.println("scaffolds in assembly: " + scaffoldCount);
+            log.info("scaffolds in assembly: " + scaffoldCount);
         }
-        System.out.println("  OK!");
+        log.info("  OK!");
     }
 
     String getExternalFileNamePrefix(String assemblyId, String assemblyName) {
@@ -150,7 +154,7 @@ public class ChromosomeSizesLoader {
 
             if( statName.equals("total-length") ) {
                 if( chr.getSeqLength()!=0 && chr.getSeqLength()!=statValue ) {
-                    System.out.println("  NOTE: chr"+chr.getChromosome()+" seqLength from assembly report: "+chr.getSeqLength()+" overwritten by stats file: "+statValue);
+                    log.warn("  NOTE: chr"+chr.getChromosome()+" seqLength from assembly report: "+chr.getSeqLength()+" overwritten by stats file: "+statValue);
                 }
                 chr.setSeqLength(statValue);
             }
@@ -167,7 +171,7 @@ public class ChromosomeSizesLoader {
         reader.close();
         chr.setGapCount(gapCount);
 
-        System.out.println(" chr"+chr.getChromosome()+", seqLen="+chr.getSeqLength()+", contigs="+chr.getContigCount()+", gaps="+chr.getGapCount());
+        log.info(" chr"+chr.getChromosome()+", seqLen="+chr.getSeqLength()+", contigs="+chr.getContigCount()+", gaps="+chr.getGapCount());
     }
 
     /**
@@ -178,7 +182,7 @@ public class ChromosomeSizesLoader {
 
         String fileNamePrefix = getExternalFileNamePrefix(assemblyId, assemblyName);
         String path = fileNamePrefix + getAssemblyReportFile();
-        System.out.println("downloading file "+path);
+        log.info("downloading file "+path);
         Map<String,ChrInfo> chrAccIds = new HashMap<>();
 
         // sample content of the file
